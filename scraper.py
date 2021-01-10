@@ -2,8 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import lxml
 
-url = 'https://spie.org/ExhibitorDatabase/Search'
+url = input('Enter url: ')
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'lxml')
+tags = soup('a')
 
-print(soup)
+for tag in tags:
+    print(tag.get('href', None))
