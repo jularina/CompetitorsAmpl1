@@ -80,4 +80,4 @@ class Parser:
 if __name__ == '__main__':
     parser = Parser()
     df_companies = parser.run()
-    df_companies.to_csv(r'C:\Users\Arina27\Desktop\Arina\diplom\data\parsing\parsed_companies1.csv')
+    df_companies.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_companies.csv')

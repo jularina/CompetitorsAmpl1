@@ -58,4 +58,4 @@ class ParserDiodes:
 if __name__ == '__main__':
     parserdiodes = ParserDiodes()
     df_companies_diodes = parserdiodes.run()
-    df_companies_diodes.to_csv(r'C:\Users\Arina27\Desktop\Arina\diplom\data\parsing\parsed_diodes.csv')
+    df_companies_diodes.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_diodes.csv')
