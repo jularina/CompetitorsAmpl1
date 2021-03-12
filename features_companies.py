@@ -7,11 +7,12 @@ pics_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\dat
 fems_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_femtosecond.csv', index_col='Unnamed: 0')
 spie_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_companies.csv', index_col='Unnamed: 0')
 
-diodes_companies = diodes_companies.drop_duplicates()[['Company', 'Wavelength','Energy','Price']]
+diodes_companies = diodes_companies.drop_duplicates()[['Company', 'Wavelength','Energy','Price', 'Shipment']]
 pics_companies = pics_companies.drop_duplicates()[['Company', 'Wavelength','Energy']]
 fems_companies = fems_companies.drop_duplicates()[['Company', 'Wavelength','Energy']]
 diodes_companies['Price'] = diodes_companies['Price'].str.slice(start=1).str.replace(',','')
 diodes_companies['Price'] = diodes_companies['Price'].astype(float)
+diodes_companies['Shipment'] = diodes_companies['Shipment'].astype(float)
 
 cols = ['Wavelength', 'Energy']
 dfs = [diodes_companies, pics_companies, fems_companies]
@@ -31,6 +32,8 @@ diodes_companies = diodes_companies.groupby(by=["Company"]).median().reset_index
 df_result = pics_companies.merge(fems_companies, left_on='Company', right_on='Company', how='outer')
 df_result = df_result.merge(diodes_companies, left_on='Company', right_on='Company', how='outer')
 df_result['Price'].fillna(df_result['Price'].mean(), inplace=True)
+df_result['Shipment'].fillna(df_result['Shipment'].mean(), inplace=True)
+df_result['Shipment'] = df_result['Shipment']*7
 df_result.fillna(0, inplace=True)
 
 mp_comps = list(df_result['Company'])
