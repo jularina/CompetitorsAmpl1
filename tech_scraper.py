@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 import pandas as pd
-
+from functools import reduce
 
 class TechnologyLasers:
     def __init__(self):
@@ -22,7 +22,8 @@ class TechnologyLasers:
         time.sleep(2)
 
     def view_tech(self):
-        n = len(self.browser.find_element_by_xpath("//*[@id='sidebar']/div[2]/section[4]/nav/ul").text.splitlines())
+        arr = self.browser.find_element_by_xpath("//*[@id='sidebar']/div[2]/section[4]/nav/ul").text.splitlines()
+        n = len(arr)
         dfs = []
         for i in range(1, n+1):
             browser2 = webdriver.Chrome(
@@ -32,10 +33,12 @@ class TechnologyLasers:
             browser2.find_element_by_xpath('//*[@id="sidebar"]/div[2]/section[4]/nav/ul/li['+str(i)+']/input').click()
             time.sleep(10)
             companies = self.technologies_get(browser2)
-            df = pd.DataFrame(index=companies)
-            df[i] = 1
+            df = pd.DataFrame()
+            df['Company'] = companies
+            df[arr[i-1]] = 1
             dfs.append(df)
-        df_result = dfs[0].merge(dfs[1], left_on='Company', right_on='Company', how='outer')
+
+        df_result = reduce(lambda df1, df2: df1.merge(df2, "outer", left_on='Company', right_on='Company'), dfs)
         return df_result
 
     def technologies_get(self, br):
@@ -70,8 +73,10 @@ class ParserTechFems(TechnologyLasers):
 if __name__ == '__main__':
     parser_tech_pics = ParserTechPics()
     dftech_companies_pics = parser_tech_pics.run()
-    dftech_companies_pics.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_technologies.csv')
 
     parser_tech_fems = ParserTechFems()
     dftech_companies_fems = parser_tech_fems.run()
-    dftech_companies_fems.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_technologies.csv')
+
+    result = dftech_companies_pics.merge(dftech_companies_fems, "outer", left_on='Company', right_on='Company')
+    result.drop_duplicates(inplace=True)
+    result.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_technologies.csv')

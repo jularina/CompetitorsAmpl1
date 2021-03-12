@@ -1,10 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 import time
 import pandas as pd
-import re
-import numpy as np
+from functools import reduce
 
 
 # --| Setup
@@ -33,33 +33,36 @@ class SpheresLasers:
         links_obj = self.browser.find_elements_by_link_text('view all data sheets & manufacturers')
         links = [link.get_attribute('href') for link in links_obj]
         dfs = []
-
-        for url_inside in links:
+        cells = [9, 11, 14, 14, 7, 12, 8, 8, 8]
+        for url_inside, cell in zip(links, cells):
             browser2 = webdriver.Chrome(
                 executable_path=r'C:\Program Files (x86)\Google\Chrome\chromedriver.exe',
                 options=self.options)
             browser2.get(url_inside)
-            df_result = self.view_sphere(browser2, url_inside)
+            df_result = self.view_sphere(browser2, url_inside, cell)
             dfs.append(df_result)
 
-        df_res = dfs[0].merge(dfs[1], left_on='Company', right_on='Company', how='outer')
+        df_res = reduce(lambda df1, df2: df1.merge(df2, "outer", left_on='Company', right_on='Company'), dfs)
         return df_res
 
-    def view_sphere(self, br, url_inside):
-        n = len(br.find_element_by_xpath('//*[@id="sidebar"]/div[2]/section[9]/nav/ul').text.splitlines())
+    def view_sphere(self, br, url_inside, cell):
+        arr = br.find_elements_by_xpath("//*[@id='sidebar']/div[2]/section["+str(cell)+"]/nav/ul/li")
+        n = len(arr)
         dfs = []
         for i in range(1, n+1):
             browser3 = webdriver.Chrome(
-                executable_path=r'C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe',
+                executable_path=r'C:\Program Files (x86)\Google\Chrome\chromedriver.exe',
                 options=self.options)
             browser3.get(url_inside)
-            browser3.find_element_by_xpath('//*[@id="sidebar"]/div[2]/section[9]/nav/ul/li['+str(1)+']/input').click()
+            browser3.find_element_by_xpath('//*[@id="sidebar"]/div[2]/section['+str(cell)+']/nav/ul/li['+str(i)+']/input').click()
             time.sleep(10)
             companies = self.spheres_get(browser3)
             df = pd.DataFrame(index=companies)
-            df[i] = 1
+            df['Company'] = companies
+            df[arr[i-1].text] = 1
             dfs.append(df)
-        df_result = dfs[0].merge(dfs[1], left_on='Company', right_on='Company', how='outer')
+            print(df.shape)
+        df_result = reduce(lambda df1, df2: df1.merge(df2, "outer", left_on='Company', right_on='Company'), dfs)
         return df_result
 
     def spheres_get(self, br):
