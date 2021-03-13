@@ -85,4 +85,4 @@ class SpheresLasers:
 if __name__ == '__main__':
     parsed_sphere_lasers = SpheresLasers()
     df_companies_diodes = parsed_sphere_lasers.run()
-    df_companies_diodes.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_spheres.csv')
+    df_companies_diodes.to_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_spheres.xlsx')
