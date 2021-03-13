@@ -43,7 +43,6 @@ class SpheresLasers:
             dfs.append(df_result)
 
         df_res = reduce(lambda df1, df2: df1.merge(df2, "outer", left_on='Company', right_on='Company'), dfs)
-        df_res.drop_duplicates(inplace=True)
         return df_res
 
     def view_sphere(self, br, url_inside, cell):
@@ -62,8 +61,10 @@ class SpheresLasers:
             df['Company'] = companies
             df[arr[i-1].text] = 1
             dfs.append(df)
-            print(arr[i-1].text, df.shape)
+
         df_result = reduce(lambda df1, df2: df1.merge(df2, "outer", left_on='Company', right_on='Company'), dfs)
+        df_result.drop_duplicates(inplace=True)
+
         return df_result
 
     def spheres_get(self, br):
