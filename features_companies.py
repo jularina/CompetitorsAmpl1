@@ -6,6 +6,18 @@ diodes_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\d
 pics_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_picosecond.csv', index_col='Unnamed: 0')
 fems_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_femtosecond.csv', index_col='Unnamed: 0')
 spie_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_companies.csv', index_col='Unnamed: 0')
+tech_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_technologies.csv', index_col='Unnamed: 0')
+sphere_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_spheres.csv', index_col='Unnamed: 0')
+tech_list , sphere_list = list(tech_companies.columns)[1:], list(sphere_companies.columns)[1:]
+medical_list = [i for i in sphere_list if 'medical / aesthetics' in i]
+
+tech_companies['Total'] = tech_companies[tech_list].sum(axis=1)
+sphere_companies['Total'] = sphere_companies[sphere_list].sum(axis=1)
+sphere_companies['Total_medicine'] = sphere_companies[medical_list].sum(axis=1)
+sphere_companies['Total_medicine'] = np.where(sphere_companies['Total_medicine'] >= 1.0, 1.0, 0.0)
+tech_companies.drop(tech_list, axis=1, inplace=True)
+sphere_companies.drop(sphere_list, axis=1, inplace=True)
+tech_sphere_comps = tech_companies.merge(sphere_companies, left_on='Company', right_on='Company', how='outer')
 
 diodes_companies = diodes_companies.drop_duplicates()[['Company', 'Wavelength','Energy','Price', 'Shipment']]
 pics_companies = pics_companies.drop_duplicates()[['Company', 'Wavelength','Energy']]
@@ -31,6 +43,7 @@ diodes_companies = diodes_companies.groupby(by=["Company"]).median().reset_index
 
 df_result = pics_companies.merge(fems_companies, left_on='Company', right_on='Company', how='outer')
 df_result = df_result.merge(diodes_companies, left_on='Company', right_on='Company', how='outer')
+df_result = df_result.merge(tech_sphere_comps, left_on='Company', right_on='Company', how='outer')
 df_result['Price'].fillna(df_result['Price'].mean(), inplace=True)
 df_result['Shipment'].fillna(df_result['Shipment'].mean(), inplace=True)
 df_result['Shipment'] = df_result['Shipment']*7
