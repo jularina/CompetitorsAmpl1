@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz
-from urllib.error import HTTPError
-import time
+import os
 
 
 # Merging parsed data
@@ -80,7 +79,7 @@ df_result['Spie_company'] = companies_new
 # Google url search
 queries = df_result['Company'].values
 try:
-    from googlesearch import search
+    import googlesearch
 except ImportError:
     print("No module named 'google' found")
 
@@ -88,7 +87,7 @@ except ImportError:
 urls1, urls2 = [], []
 for i, query in enumerate(queries):
     print(i)
-    urls = search(query + ' lasers', tld="co.in", num=2, stop=2, pause=2)
+    urls = googlesearch.search(query + ' lasers', tld='co.in', num=2, stop=2, pause=10)
     url1 = next(iter(urls))
     url2 = next(iter(urls))
     print(url1, url2)
