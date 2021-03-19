@@ -86,7 +86,6 @@ except ImportError:
 
 urls1, urls2 = [], []
 for i, query in enumerate(queries):
-    print(i)
     urls = googlesearch.search(query + ' lasers', tld='co.in', num=2, stop=2, pause=10)
     url1 = next(iter(urls))
     url2 = next(iter(urls))
