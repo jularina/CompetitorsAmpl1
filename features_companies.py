@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz
-import os
-
 
 # Merging parsed data
-
 diodes_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_diodes.csv',
                                index_col='Unnamed: 0')
 pics_companies = pd.read_csv(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\parsed_picosecond.csv',
@@ -75,22 +72,4 @@ for i in mp_comps:
     companies_new.append(company)
 
 df_result['Spie_company'] = companies_new
-
-# Google url search
-queries = df_result['Company'].values
-try:
-    import googlesearch
-except ImportError:
-    print("No module named 'google' found")
-
-
-urls1, urls2 = [], []
-for i, query in enumerate(queries):
-    urls = googlesearch.search(query + ' lasers', tld='co.in', num=2, stop=2, pause=10)
-    url1 = next(iter(urls))
-    url2 = next(iter(urls))
-    print(url1, url2)
-
-#df_result['Url1'] = urls1
-#df_result['Url2'] = urls2
-#df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
+df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
