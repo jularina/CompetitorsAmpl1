@@ -46,10 +46,10 @@ class WebStatQuery:
         results = []
         for i, row in self.data.iterrows():
                 url = row['Url1']
-                print(url)
                 data = awis.run(url)
                 rez = self.parse(data)
                 rez = ' '.join(map(str,rez))
+                print(rez)
                 results.append(rez)
                 myfile.write("%s\n" % rez)
 

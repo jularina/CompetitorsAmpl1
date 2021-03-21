@@ -134,5 +134,3 @@ if __name__ == '__main__':
     webstat_obj = WebStatQuery(comps_df)
     webstat_obj.aws_query()
     df_result = webstat_obj.data
-
-    # df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
