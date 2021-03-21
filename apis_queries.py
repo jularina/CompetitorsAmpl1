@@ -2,6 +2,7 @@ import pandas as pd
 from ratelimit import limits, RateLimitException
 from backoff import on_exception, expo
 from googlesearch import search
+import time
 
 
 # Google url search
@@ -20,9 +21,11 @@ class UrlQuery:
         url2 = next(iter(urls))
         self.urls1.append(url1)
         self.urls2.append(url2)
+        print(url1)
 
     def create_urls(self):
         for query in self.queries:
+            time.sleep(15)
             self.call_api(query)
 
         self.data['Url1'] = self.urls1
@@ -36,9 +39,11 @@ class WebStatQuery:
         self.data = df
         self.API_KEY = 'rHoyz0awCN5NXG7udWyBj62iBQNhbaUh7XqbQjHB'
 
+
 if __name__ == '__main__':
     df_result = pd.read_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
     obj = UrlQuery(df_result)
     df_result = obj.create_urls()
+    df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
 
 
