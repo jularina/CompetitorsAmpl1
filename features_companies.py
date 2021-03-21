@@ -73,3 +73,5 @@ for i in mp_comps:
 
 df_result['Spie_company'] = companies_new
 df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
+
+
