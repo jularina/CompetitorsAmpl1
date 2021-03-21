@@ -119,18 +119,18 @@ class UrlGrouping:
 
 if __name__ == '__main__':
     # Merging data
-    grouped_obj = GroupMaking()
-    merged_df = grouped_obj.merge_products()
+    # grouped_obj = GroupMaking()
+    # merged_df = grouped_obj.merge_products()
 
     # Adding URLs from Google
-    urls_obj = UrlQuery(merged_df)
-    urls_df = urls_obj.create_urls()
+    # urls_obj = UrlQuery(merged_df)
+    # urls_df = urls_obj.create_urls()
 
     # Grouping companies by URLs
     comps_grouped = UrlGrouping(urls_df)
     comps_df = comps_grouped.url_group()
 
     # Adding URL's statistcs
-    webstat_obj = WebStatQuery(comps_df)
-    webstat_obj.aws_query()
-    df_result = webstat_obj.data
+    # webstat_obj = WebStatQuery(comps_df)
+    # webstat_obj.aws_query()
+    # df_result = webstat_obj.data
