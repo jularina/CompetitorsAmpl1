@@ -43,16 +43,19 @@ class WebStatQuery:
 
     def aws_query(self):
         myfile = open('urls_data.txt', 'w')
+        results = []
         for i, row in self.data.iterrows():
-            if i >= 120 and i < 160:
                 url = row['Url1']
                 print(url)
                 data = awis.run(url)
                 rez = self.parse(data)
                 rez = ' '.join(map(str,rez))
+                results.append(rez)
                 myfile.write("%s\n" % rez)
 
         myfile.close()
+
+        self.data['AWS data'] = results
 
     def parse(self, data):
         myroot = ET.fromstring(data)
@@ -76,14 +79,5 @@ class WebStatQuery:
         print(' '.join(map(str,[rank_overall, reach_rank, reach_permil, pv_rank, pv_peruser])))
         return [rank_overall, reach_rank, reach_permil, pv_rank, pv_peruser]
 
-
-if __name__ == '__main__':
-    df_result = pd.read_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
-    #obj = UrlQuery(df_result)
-    #df_result = obj.create_urls()
-    #df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
-
-    obj1 = WebStatQuery(df_result)
-    obj1.aws_query()
 
 
