@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz
-from apis_queries import UrlQuery, WebStatQuery
+from apis_queries import UrlQuery, WebStatQuery, GKGSearch
 
 
 class GroupMaking:
@@ -84,7 +84,6 @@ class ConferenceMembership:
     def find_similar_companies(self):
         mp_comps = list(self.df_result['Company'])
         spie_comps = list(set(self.spie_companies['Company']))
-        df = pd.DataFrame(mp_comps)
 
         companies_new = []
 
@@ -96,6 +95,7 @@ class ConferenceMembership:
                 dist = fuzz.token_sort_ratio(i, val)
                 if dist > dist0:
                     dist0, company = dist, val
+
             companies_new.append(company)
 
         self.df_result['Spie_company'] = companies_new
@@ -118,6 +118,7 @@ class UrlGrouping:
 
 
 if __name__ == '__main__':
+
     # Merging data
     # grouped_obj = GroupMaking()
     # merged_df = grouped_obj.merge_products()
@@ -127,10 +128,23 @@ if __name__ == '__main__':
     # urls_df = urls_obj.create_urls()
 
     # Grouping companies by URLs
-    comps_grouped = UrlGrouping(urls_df)
-    comps_df = comps_grouped.url_group()
+    # comps_grouped = UrlGrouping(urls_df)
+    # comps_df = comps_grouped.url_group()
 
     # Adding URL's statistcs
     # webstat_obj = WebStatQuery(comps_df)
     # webstat_obj.aws_query()
     # df_result = webstat_obj.data
+
+    #Conference membership
+    # df = pd.read_excel(
+    #         r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
+    # conf_obj = ConferenceMembership(df)
+    # conf_obj.find_similar_companies()
+    # conf_obj.df_result.to_excel(r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\final_companies.xlsx')
+
+    # Google knowledge graph search
+    # df = pd.read_excel(
+    #          r'C:\Users\maxim\OneDrive\Desktop\folder\diplom\data\parsing\merged_companies.xlsx')
+    # gkg_obj = GKGSearch(df)
+    # gkg_obj.companies_iterate()
