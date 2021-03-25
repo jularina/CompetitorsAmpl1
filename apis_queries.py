@@ -1,10 +1,9 @@
-import pandas as pd
-from ratelimit import limits, RateLimitException
-from backoff import on_exception, expo
 from googlesearch import search
 import time
 import xml.etree.ElementTree as ET
 import awis
+import json
+import urllib
 
 
 # Google url search
@@ -78,6 +77,34 @@ class WebStatQuery:
 
         print(' '.join(map(str,[rank_overall, reach_rank, reach_permil, pv_rank, pv_peruser])))
         return [rank_overall, reach_rank, reach_permil, pv_rank, pv_peruser]
+
+
+class GKGSearch:
+    def __init__(self, df):
+        self.data = df
+        self.API_KEY = 'AIzaSyDFdRboX8TncQM9OCECsJN6aDkD2EVAbUs'
+        self.service_url = 'https://kgsearch.googleapis.com/v1/entities:search'
+
+    def companies_iterate(self):
+        comps = self.data['Company'].values
+
+        for i in comps:
+            self.graph_query(i)
+            break
+
+    def graph_query(self,query):
+        params = {
+            'query': query,
+            'limit': 10,
+            'indent': True,
+            'key': self.API_KEY,
+        }
+        url = self.service_url + '?' + urllib.parse.urlencode(params)
+        response = json.loads(urllib.request.urlopen(url).read())
+        print(response)
+
+
+
 
 
 
