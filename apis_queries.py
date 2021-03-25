@@ -38,7 +38,7 @@ class UrlQuery:
 class WebStatQuery:
     def __init__(self, df):
         self.data = df
-        self.API_KEY = 'rHoyz0awCN5NXG7udWyBj62iBQNhbaUh7XqbQjHB'
+        self.API_KEY = ''
 
     def aws_query(self):
         myfile = open('urls_data.txt', 'w')
@@ -82,7 +82,7 @@ class WebStatQuery:
 class GKGSearch:
     def __init__(self, df):
         self.data = df
-        self.API_KEY = 'AIzaSyDFdRboX8TncQM9OCECsJN6aDkD2EVAbUs'
+        self.API_KEY = ''
         self.service_url = 'https://kgsearch.googleapis.com/v1/entities:search'
 
     def companies_iterate(self):
