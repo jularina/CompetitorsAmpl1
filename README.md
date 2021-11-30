@@ -1,6 +1,13 @@
 # Web parsing tool for laser market competitors info collection
 
-This is the first part of 5-stage project, connected with scoring the companies in laser industry.
+This is the first part of **5-stage project**, connected with scoring the companies in laser industry.
+
+Other parts of project:
+- https://github.com/jularina/CompetitorsAmpl2
+- https://github.com/jularina/CompetitorsAmpl3
+- https://github.com/jularina/CompetitorsAmpl4
+- https://github.com/jularina/CompetitorsAmpl5
+
 Here the main accent is on parsing web with Silenium and Bs4 for gaining info about market situation and competitors.
 
 Info is collected from many web-resources, marketplaces, social networks. The processes are shown on Pic.1, Pic.2, Pic.3. On Pic.1 the scheme for obtaining information about URLs, product activities, the functioning of the company's web applications is shown. On Pic.2 scheme for obtaining information about the presence of a domain conference on a web application is shown. On Pic.3 scheme for obtaining information from a social network - Twitter is explained. Overall, 3 main APIs are used - Twitter API, Amazon Alexa API, GoogleSearch API.
